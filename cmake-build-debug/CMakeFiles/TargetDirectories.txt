@@ -1,0 +1,2 @@
+R:/Dropbox/thingbrok/cmake-build-debug/CMakeFiles/edit_cache.dir
+R:/Dropbox/thingbrok/cmake-build-debug/CMakeFiles/rebuild_cache.dir
