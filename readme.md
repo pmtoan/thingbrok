@@ -12,12 +12,17 @@
 +---------------+          +-------------+          +--------------+ 
 ```
 
-***Usage***
+***Install from source***
+* Require run thingbrok as root user
 ```bash
 git clone https://github.com/pmtoan/thingbrok.git  
 cd thingbrok  
-gcc -o thingbrok thingbrok.c  
-./thingbrok --help
+sudo /bin/bash install.sh
+```
+
+***Usage***
+```bash
+thingbrok --help
 ``` 
 
 ***Example***
