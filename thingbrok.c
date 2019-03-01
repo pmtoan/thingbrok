@@ -1,16 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <unistd.h>
-#include <wait.h>
-#include "modules/unix/x86_64-linux-gnu/socket/unix_x86_64_linux_tcp_socket.h"
-#include "modules/utilities/utils_string.h"
-#include "modules/utilities/utils_time.h"
 #include "controller/thingbrok/thingbrok_controller.h"
 
+#define __DEF_APP_NAME__	"Thingbrok"
+#define __DEF_VERSION__		"ver 1.0"
 #define __DEF_HTTP_PORT__	8000
 #define __DEF_API_TOKEN__	"abc"
-#define __DEF_MSG__     		"what do you want?"
+#define __DEF_MSG__     	"what do you want?"
 
 void signal_handler(int sig);
 void print_help();
@@ -103,7 +97,7 @@ void signal_handler(int sig)
 
 void print_help()
 {
-	printf("Thingbrok - Broker for application v1.0\n"
+	printf("%s - Broker for application %s\n"
 		"\nUsage\n"
         "\tthingbrok --port [listen-port] --key [api_token_key]\n"
 		"\nExample\n"
@@ -113,6 +107,7 @@ void print_help()
         "\t--key:  API token key Thingbrok use. Client request with header Broker-Token: [api_key]\n"
 		"\t        If run without --key option, key will be 'abc'\n"
 		"\t--help: Show Thingbrok help information\n"
-        "\nFree software developed by Thingler project\n"
+        "\nFree software developed by Thingler project\n",
+        __DEF_APP_NAME__, __DEF_VERSION__
   	);
 }
