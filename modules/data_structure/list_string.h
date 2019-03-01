@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../core/types.h"
+#include "../utilities/utils_string.h"
 
 /* --- string list data structure --- */
 typedef struct STRING
@@ -29,6 +30,7 @@ void list_string_free(LIST_STRING* list);
 void list_string_print(LIST_STRING list);
 void list_string_append(LIST_STRING* list, const char* value);
 char* list_string_compose_list_string(LIST_STRING list);
+LIST_STRING list_string_parse(const char* string, const char* delimiter);
 /*----------------------------------------------------------------*/
 
 LIST_STRING list_string_init()
@@ -133,6 +135,18 @@ char* list_string_compose_list_string(LIST_STRING list)
     sprintf(buffer, "%s]", buffer);
     char* list_string = strdup(buffer);
     free(buffer);
+    return list_string;
+}
+
+LIST_STRING list_string_parse(const char* string, const char* delimiter)
+{
+    LIST_STRING list_string = list_string_init();
+    int num_element = string_count_str(string, delimiter);
+    char** string_after_split = string_split(string, delimiter, num_element);
+    for (int i = 0; i <= num_element; ++i)
+    {
+        list_string_append(&list_string, string_after_split[i]);
+    }
     return list_string;
 }
 

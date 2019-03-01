@@ -2,18 +2,18 @@
 #define __UTILITIES_FILE_H__
 
 #include "../core/types.h"
-#include "../data_structure/bytes.h"
+#include "../data_structure/list_string.h"
 #include "utils_string.h"
 
 /*----------------------------------------------------------------*/
 unsigned long file_sizeof(const char* path);
+unsigned long file_count_line(const char* path);
 char* file_read_text(const char* path);
 void file_write_text(const char* path, const char* buffer);
-BYTES file_read_bin(const char* path);
-void file_write_bin(const char* path, BYTES buffer);
 char* file_get_extension(const char* path);
 void file_append_line(const char* path, const char* line);
 char* file_read_first_line(const char* path);
+LIST_STRING file_read_text_last(const char* path, int lines);
 /*----------------------------------------------------------------*/
 
 unsigned long file_sizeof(const char* path)
@@ -58,19 +58,6 @@ void file_write_text(const char* path, const char* buffer)
     fclose(fp);
 }
 
-BYTES file_read_bin(const char* path)
-{
-    BYTES bytes = bytes_init();
-    bytes_read_file(&bytes, path);
-    return bytes;
-}
-
-void file_write_bin(const char* path, BYTES buffer)
-{
-    bytes_write_file(buffer, path);
-    return;
-}
-
 char* file_get_extension(const char* path)
 {
     /*
@@ -111,6 +98,47 @@ char* file_read_first_line(const char* path)
     fgets(buffer, 1024, fp);
     fclose(fp);
     return string_replace(buffer, "\n", "");
+}
+
+LIST_STRING file_read_text_last(const char* path, int lines)
+{
+    /*
+    *   @todo read last @lines from @path
+    */
+    unsigned long num_line = file_count_line(path);
+    if (num_line <= lines)
+        return list_string_parse(file_read_text(path), "\n");
+    else
+    {
+        LIST_STRING list = list_string_init();
+        FILE* fp = fopen(path, "r");
+        char* buffer = (char*)malloc(__SIZE_LARGE__);
+        int i = 0;
+        for (i; i < num_line - lines; ++i)
+            fgets(buffer, __SIZE_LARGE__, fp);
+        for (i; i < num_line; ++i)
+        {
+            fgets(buffer, __SIZE_LARGE__, fp);
+            list_string_append(&list, string_replace(buffer, "\n", ""));
+        }
+        if (buffer != NULL) free(buffer);
+        return list;
+    }
+}
+
+unsigned long file_count_line(const char* path)
+{
+    /*
+    *   @todo: count how many line in file?
+    */
+    unsigned long lines = 0;
+    FILE* fp = fopen(path, "r");
+    char* buffer = (char*)malloc(__SIZE_LARGE__);
+    while(fgets(buffer, __SIZE_LARGE__, fp))
+        lines += 1;
+    if (buffer != NULL) free(buffer);
+    fclose(fp);
+    return lines;
 }
 
 #endif // __UTILITIES_FILE_H__

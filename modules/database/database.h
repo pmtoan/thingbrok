@@ -13,8 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../unix/x86_64-linux-gnu/unix_x86_64_linux_dir.h"
-#include "../unix/x86_64-linux-gnu/unix_x86_64_linux_file.h"
+#include "../unix/unix_x86_64_linux_dir.h"
+#include "../unix/unix_x86_64_linux_file.h"
 #include "../utilities/utils_time.h"
 #include "../utilities/utils_file.h"
 #include "../utilities/utils_string.h"
@@ -63,6 +63,7 @@ int _db_do_create_topic(const char* app_name, const  char* topic_name);
 int _db_do_drop_topic(const char* app_name, const  char* topic_name);
 int _db_do_insert(const char* app_name, const char* topic_name, const char* data_insert);
 LIST_STRING _db_do_select(const char* app_name, const char* topic_name);
+LIST_STRING _db_do_select_last(const char* app_name, const char* topic_name);
 /********************************************************************/
 
 DB_QUERY db_init_instance(const char* app_name, const char* topic_name)
@@ -245,6 +246,18 @@ LIST_STRING _db_do_select(const char* app_name, const char* topic_name)
 	free(buffer);
 	free(f_path);
 	fclose(f_pointer);
+	return rows;
+}
+
+LIST_STRING _db_do_select_last(const char* app_name, const char* topic_name)
+{
+	LIST_STRING rows = list_string_init();
+	char* f_path = (char*)malloc(512);
+	sprintf(f_path, "%s/%s/%s/%s.data", __DATABASE_STORAGE_PATH__, app_name, topic_name, topic_name);
+	if (unix_x86_64_linux_get_stat_type(f_path) == -1)
+		return rows;
+	return file_read_text_last(f_path, 10);
+	free(f_path);
 	return rows;
 }
 
