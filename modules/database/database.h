@@ -64,6 +64,7 @@ int _db_do_drop_topic(const char* app_name, const  char* topic_name);
 int _db_do_insert(const char* app_name, const char* topic_name, const char* data_insert);
 LIST_STRING _db_do_select(const char* app_name, const char* topic_name);
 LIST_STRING _db_do_select_last(const char* app_name, const char* topic_name);
+LIST_STRING _db_do_select_contain_string(const char* app_name, const char* topic_name, const char* str_contain);
 /********************************************************************/
 
 DB_QUERY db_init_instance(const char* app_name, const char* topic_name)
@@ -251,12 +252,37 @@ LIST_STRING _db_do_select(const char* app_name, const char* topic_name)
 
 LIST_STRING _db_do_select_last(const char* app_name, const char* topic_name)
 {
+	/*
+	*	@todo: query last 10 rows data
+	*/
 	LIST_STRING rows = list_string_init();
 	char* f_path = (char*)malloc(512);
 	sprintf(f_path, "%s/%s/%s/%s.data", __DATABASE_STORAGE_PATH__, app_name, topic_name, topic_name);
 	if (unix_x86_64_linux_get_stat_type(f_path) == -1)
 		return rows;
 	return file_read_text_last(f_path, 10);
+	free(f_path);
+	return rows;
+}
+
+LIST_STRING _db_do_select_contain_string(const char* app_name, const char* topic_name, const char* str_contain)
+{
+	/*
+	*	@todo: query data from database and return record contain @str_contain
+	*/
+	LIST_STRING rows = list_string_init();
+
+	char* f_path = (char*)malloc(512);
+	sprintf(f_path, "%s/%s/%s/%s.data", __DATABASE_STORAGE_PATH__, app_name, topic_name, topic_name);
+
+	FILE* fp = fopen(f_path, "r");
+	char* buffer = (char*)malloc(__SIZE_LARGE__);
+	while(fgets(buffer, __SIZE_LARGE__, fp))
+		if (strstr(buffer, str_contain))
+			list_string_append(&rows, string_replace(buffer, "\n", ""));
+
+	fclose(fp);
+	if (buffer != NULL) free(buffer);
 	free(f_path);
 	return rows;
 }

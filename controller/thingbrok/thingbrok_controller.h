@@ -93,10 +93,19 @@ char* _controller_control_pull(HTTP_REQ req)
     /*
     *   @todo: route a pull request
     */
-    LIST_STRING data_rows = _db_do_select_last(
-        list_pair_find(req.params, "app_name"),
-        list_pair_find(req.params, "topic_name")
-    );
+    LIST_STRING data_rows;
+    char* query = list_pair_find(req.params, "query");
+    if (strcmp(query, "") != 0)
+        data_rows = _db_do_select_contain_string(
+            list_pair_find(req.params, "app_name"),
+            list_pair_find(req.params, "topic_name"),
+            query
+        );
+    else
+        data_rows = _db_do_select_last(
+            list_pair_find(req.params, "app_name"),
+            list_pair_find(req.params, "topic_name")
+        );
     char* data = list_string_compose_list_string(data_rows);
     list_string_free(&data_rows);
     return data;
