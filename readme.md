@@ -1,8 +1,9 @@
-**Thingbrok - An broker for applications**
+**Thingbrok - A broker for applications**
 
 ***What is Thingbrok?***  
-* Thingbrok is an socket server stand between application back-end and front-end.  
-* Thingbrok current work in HTTP protocol  
+* Thingbrok is a broker server for applications.  
+* Thingbrok is a socket server stand between application back-end and front-end.  
+* Thingbrok current work in HTTP protocol.  
 
 ***Thingbrok model***  
 ```text
@@ -23,6 +24,7 @@ sudo /bin/bash install.sh
 ***Usage***
 ```bash
 thingbrok --help
+thingbrokctl --help
 ``` 
 
 ***Example***
