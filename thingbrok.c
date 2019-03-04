@@ -1,7 +1,7 @@
 #include "controller/thingbrok/thingbrok_controller.h"
 
 #define __DEF_APP_NAME__	"Thingbrok"
-#define __DEF_VERSION__		"ver 1.0"
+#define __DEF_VERSION__		"version 1.0"
 #define __DEF_HTTP_PORT__	8000
 #define __DEF_API_TOKEN__	"abc"
 #define __DEF_MSG__     	"what do you want?"
@@ -26,6 +26,7 @@ int main(int argc, char const *argv[])
 		}
 	listen_port = __DEF_HTTP_PORT__;
 	api_key = strdup(__DEF_API_TOKEN__);
+    
 	for (int i = 1; i < argc; ++i)
 	{
 		if (strstr(argv[i] , "--port"))
