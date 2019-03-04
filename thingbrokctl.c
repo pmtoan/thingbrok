@@ -10,6 +10,7 @@ void print_help();
 
 int main(int argc, char const *argv[])
 {
+	int time_to_run = 1;
 	char* ip = __DEF_IP__;
 	int port = __DEF_PORT__;
 	char* method = "NULL";
@@ -18,6 +19,7 @@ int main(int argc, char const *argv[])
 	char* app = NULL;
 	char* topic = NULL;
 	char* data = NULL;
+	char* query = "";
 
 	for (int i = 1; i < argc; ++i)
 	{
@@ -47,13 +49,18 @@ int main(int argc, char const *argv[])
 		else if (strcmp(argv[i], "-d") == 0) data = strdup(argv[i+1]);
 		else if (strcmp(argv[i], "-a") == 0) app = strdup(argv[i+1]);
 		else if (strcmp(argv[i], "-t") == 0) topic = strdup(argv[i+1]);
+		else if (strcmp(argv[i], "-r") == 0) time_to_run = atoi(argv[i+1]);
+		else if (strcmp(argv[i], "-q") == 0) query = strdup(argv[i+1]);
 	}
 
 	if (strcmp(action, "push") == 0)
 	{
 		if (app != NULL && topic != NULL && data != NULL)
 		{
-			controller_control_ctl(ip, port, method, action, key, app, topic, data);
+			for (int i = 0; i < time_to_run; ++i)
+			{
+				controller_control_ctl(ip, port, method, action, key, app, topic, data, query);
+			}
 			return 0;
 		}
 	}
@@ -62,7 +69,10 @@ int main(int argc, char const *argv[])
 	{
 		if (app != NULL && topic != NULL)
 		{
-			controller_control_ctl(ip, port, method, action, key, app, topic, "");
+			for (int i = 0; i < time_to_run; ++i)
+			{
+				controller_control_ctl(ip, port, method, action, key, app, topic, "", query);
+			}
 			return 0;
 		}
 	}
@@ -71,7 +81,10 @@ int main(int argc, char const *argv[])
 	{
 		if (app != NULL)
 		{
-			controller_control_ctl(ip, port, method, action, key, app, topic, "");
+			for (int i = 0; i < time_to_run; ++i)
+			{
+				controller_control_ctl(ip, port, method, action, key, app, topic, "", query);
+			}
 			return 0;
 		}
 	}
@@ -80,7 +93,10 @@ int main(int argc, char const *argv[])
 	{
 		if (app != NULL && topic != NULL)
 		{
-			controller_control_ctl(ip, port, method, action, key, app, topic, "");
+			for (int i = 0; i < time_to_run; ++i)
+			{
+				controller_control_ctl(ip, port, method, action, key, app, topic, "", query);
+			}
 			return 0;
 		}
 	}
@@ -108,7 +124,10 @@ void print_help()
 		"\t\t--topic: create a topic on thingbrok server.\n"
 		"\t-a: application name.\n"
 		"\t-t: topic name.\n"
-		"\t-d: raw data pushed to thingbrok server.\n",
+		"\t-d: raw data pushed to thingbrok server.\n"
+		"\t-r: time to send request.\n"
+		"\t-q: string to query data.\n"
+		"\nFree software developed by Thingler project (http://thingler.xyz)\n",
 		__DEF_APP_NAME__, __DEF_VERSION__, __DEF_APP_NAME__, __DEF_APP_NAME__, __DEF_IP__, __DEF_PORT__, __DEF_KEY__
 	);
 }

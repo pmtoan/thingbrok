@@ -30,7 +30,8 @@ void controller_control_ctl(
     const char* key,    
     const char* app,    
     const char* topic,
-    const char* data   
+    const char* data,
+    const char* query   
 );
 /************************************************************************/
 
@@ -154,7 +155,8 @@ void controller_control_ctl(
     const char* key,    
     const char* app,    
     const char* topic,
-    const char* data   
+    const char* data,
+    const char* query   
 ){
     /*
     *   @todo: make request to thingbrok server, called by thingbrokctl
@@ -164,11 +166,11 @@ void controller_control_ctl(
     char* msg = (char*)malloc(__SIZE_EXTRA__);
     sprintf(
         msg,
-        "%s /%s?app_name=%s&topic_name=%s HTTP/1.1\r\n"
+        "%s /%s?app_name=%s&topic_name=%s&query=%s HTTP/1.1\r\n"
         "Host: %s:%d\r\n"
         "Broker-Token: %s\r\n\r\n"
         "%s",
-        method, action, app, topic, ip, port, key, data
+        method, action, app, topic, query, ip, port, key, data
     );
     unix_x86_64_linux_tcp_socket_send_msg(sd, msg);
     unix_x86_64_linux_tcp_socket_read_msg(sd, msg, __SIZE_EXTRA__);
