@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
 		}
 	listen_port = __DEF_HTTP_PORT__;
 	api_key = strdup(__DEF_API_TOKEN__);
-    
+
 	for (int i = 1; i < argc; ++i)
 	{
 		if (strstr(argv[i] , "--port"))
@@ -108,7 +108,7 @@ void print_help()
         "\t--key:  API token key Thingbrok use. Client request with header Broker-Token: [api_key]\n"
 		"\t        If run without --key option, key will be 'abc'\n"
 		"\t--help: Show Thingbrok help information\n"
-        "\nFree software developed by Thingler project\n",
+        "\nFree software developed by Thingler project (http://thingler.xyz)\n",
         __DEF_APP_NAME__, __DEF_VERSION__
   	);
 }
